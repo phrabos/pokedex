@@ -7,7 +7,7 @@ import {
 
 import HomePage from './homePage.js';
 import SearchPage from './searchPage.js';
-import Header from './header.js';
+import Header from './header/header.js';
 
 export default class App extends Component {
     render() {
