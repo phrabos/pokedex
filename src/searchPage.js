@@ -7,11 +7,16 @@ import SideBar from './sideBar.js';
 
 export default class SearchPage extends Component {
     state = {
-        objects: data,
+        objects: [],
         filteredObjects: [],
         aToZ: '',
         type: '',
         search: '',
+    }
+    componentDidMount = () =>{
+        this.setState({
+            objects: data,
+        })
     }
     handleSearchChange = (e) => {
         this.setState({
@@ -36,7 +41,6 @@ export default class SearchPage extends Component {
     
       render() {
         const uniques = Array.from(new Set(data.map(object => object.type_1)))
-        console.log(this.state);
 
         const filteredObjects = this.state.objects.filter(object => object.pokemon.includes(this.state.search))
         const sortedObjects = filteredObjects.filter(object => object.type_1.includes(this.state.type));
