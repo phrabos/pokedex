@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-export default [
+const data = [
     {
        '_id':'5cef3501ef6005a77cd4fd17',
        'pokemon':'bulbasaur',
@@ -464,3 +464,4 @@ export default [
        'pokedex':'http://www.pokemon.com/us/pokedex/pidgey'
     }
 ]
+export default data;

@@ -22,7 +22,7 @@ export default class App extends Component {
                             render={(routerProps) => <HomePage {...routerProps} />} 
                         />
                         <Route 
-                            path="/quote" 
+                            path="/search" 
                             exact
                             render={(routerProps) => <SearchPage {...routerProps} />} 
                         />
