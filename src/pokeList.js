@@ -6,7 +6,7 @@ export default class PokeList extends Component {
     render() {
 
         const pokeLI = this.props.dataObjects.map( object =>(<PokeImage 
-            key={this.props.key} 
+            key={object._id} 
             url={object.url_image} 
             alt={object.id}
             name={object.pokemon}

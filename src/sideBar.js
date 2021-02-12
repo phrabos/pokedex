@@ -7,7 +7,8 @@ export default class SideBar extends Component {
         return (
             <div className='search-box'>
                 <SearchBox 
-                    changeHandler = {this.props.changeHandler}
+                    searchValue = {this.props.searchValue}
+                    buttonHandler = {this.props.buttonHandler}
                 />
                 <Dropdown 
                     handleChange={this.props.handleChange}

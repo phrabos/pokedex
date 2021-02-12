@@ -7,29 +7,52 @@ import SideBar from './sideBar.js';
 
 export default class SearchPage extends Component {
     state = {
-        test: 0,
+        objects: data,
+        filteredObjects: [],
+        aToZ: '',
+        type: '',
+        search: '',
     }
-
-    handleChange = (e) => {
+    handleSearchChange = (e) => {
         this.setState({
-          test: 5,
+          search: e.target.value,
         })
       }
+    handleAZChange = (e) => {
+        this.setState({
+          aToZ: e.target.value,
+        })
+      }
+    handleNameChange = (e) => {
+      this.setState({
+        type: e.target.value,
+      })
+    }
+    handleButtonChange = (e) => {
+        this.setState({
+          filteredObjects: e.target.value,
+        })
+      }
+    
       render() {
+        const uniques = Array.from(new Set(data.map(object => object.type_1)))
         console.log(this.state);
+
+        const filteredObjects = this.state.objects.filter(object => object.pokemon.includes(this.state.search))
+
         return (
             <>
             <SideBar 
-            changeHandler = {this.handleChange}
-            handleChange = {this.handleChange}
-            options = {['one','two','three']}
-            handleChange2 = {this.handleChange}
+            searchValue = {this.handleSearchChange}
+            buttonHandler = {this.handleButtonChange}
+            handleChange = {this.handleNameChange}
+            options = {uniques}
+            handleChange2 = {this.handleAZChange}
             options2 = {['Ascending', 'Descending']}
             />
             <div className='ul-div'>
                 <PokeList 
-                dataObjects={data}
-                key={data._id}
+                dataObjects={filteredObjects}
                 />
             </div>
 

@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import data from './data'
 
 
 export default class Dropdown extends Component {
@@ -7,7 +8,7 @@ export default class Dropdown extends Component {
             <>
                 <select onChange={this.props.handleChange}>
                     {this.props.options.map(option => 
-                        <option value={option}>{option}</option>
+                        <option key={Math.random()}value={option}>{option}</option>
                     )}
                 </select>
             </>
