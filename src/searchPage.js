@@ -39,6 +39,8 @@ export default class SearchPage extends Component {
         console.log(this.state);
 
         const filteredObjects = this.state.objects.filter(object => object.pokemon.includes(this.state.search))
+        const sortedObjects = filteredObjects.filter(object => object.type_1.includes(this.state.type));
+        const orderedObjects = sortedObjects.sort((a,b) => a - b);
 
         return (
             <>
@@ -52,7 +54,7 @@ export default class SearchPage extends Component {
             />
             <div className='ul-div'>
                 <PokeList 
-                dataObjects={filteredObjects}
+                dataObjects={orderedObjects}
                 />
             </div>
 
