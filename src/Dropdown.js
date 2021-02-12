@@ -7,7 +7,7 @@ export default class Dropdown extends Component {
         return (
             <>
                 <select onChange={this.props.handleChange}>
-                <option value=''>- Choose Something -</option> 
+                <option value=''>- Sort By-</option> 
                     {this.props.options.map(option => 
                         <option key={Math.random()}value={option}>{option}</option>
                     )}
