@@ -10,6 +10,7 @@ export default class PokeImage extends Component {
                 <p>Abitliy: {this.props.ability}</p>
                 <p>Shape: {this.props.shape}</p>
                 <p>Type: {this.props.type}</p>
+                <p>Egg: {this.props.egg}</p>
             </li>
         )
     }

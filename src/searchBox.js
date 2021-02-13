@@ -5,7 +5,7 @@ export default class SearchBox extends Component {
         return (
             <>
                 <input onChange={this.props.searchValue}placeholder='search'></input>
-                <button onClick={this.props.buttonHandler}>Submit</button>
+                <button onClick={this.props.buttonHandler}>Clear Search</button>
             </>
         )
     }
