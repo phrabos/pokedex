@@ -39,3 +39,12 @@ li {
   height: 200px;
   border: 2px solid black;
 }
+.search-box{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+  border: 1px solid magenta;
+  margin: 5px;
+
+}

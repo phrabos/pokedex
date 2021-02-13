@@ -10,7 +10,7 @@ export default class SearchPage extends Component {
         objects: [],
         filteredObjects: [],
         aToZ: '',
-        type: '',
+        category: '',
         search: '',
     }
     componentDidMount = () =>{
@@ -30,7 +30,8 @@ export default class SearchPage extends Component {
       }
     handleNameChange = (e) => {
       this.setState({
-        type: e.target.value,
+        category: e.target.value,
+        
       })
     }
     handleButtonChange = (e) => {
@@ -38,27 +39,42 @@ export default class SearchPage extends Component {
           filteredObjects: e.target.value,
         })
       }
-    
-      render() {
-        const uniques = Array.from(new Set(data.map(object => object.type_1)))
-
+    filteredDataObjects = () => {
+        if (this.state.search === '' && this.state.category === '') return this.state.objects;
         const filteredObjects = this.state.objects.filter(object => object.pokemon.includes(this.state.search))
-        const sortedObjects = filteredObjects.filter(object => object.type_1.includes(this.state.type));
-        const orderedObjects = sortedObjects.sort((a,b) => a - b);
+        return filteredObjects;
+    }
 
+    sortAZ = () => {
+            if(this.state.category === '') return;
+            if(this.state.aToZ === 'Descending'){
+                this.state.objects.sort((a,b) => b[this.state.category].localeCompare(a[this.state.category]))
+            }else {
+                this.state.objects.sort((a,b) => a[this.state.category].localeCompare(b[this.state.category]))
+            }
+        }       
+        
+        render() {
+
+        this.sortAZ();
         return (
             <>
             <SideBar 
             searchValue = {this.handleSearchChange}
             buttonHandler = {this.handleButtonChange}
             handleChange = {this.handleNameChange}
-            options = {uniques}
+            options = {['pokemon', 'ability_2', 'shape', 'type_1']}
+            currentValue={this.state.category}
+            placeholder1={'-Category-'}
             handleChange2 = {this.handleAZChange}
             options2 = {['Ascending', 'Descending']}
+            currentValue2={this.state.aToZ}
+            placeholder2={'-Sort Order-'}
+
             />
             <div className='ul-div'>
                 <PokeList 
-                dataObjects={orderedObjects}
+                dataObjects={this.filteredDataObjects()}
                 />
             </div>
 

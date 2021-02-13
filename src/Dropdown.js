@@ -6,8 +6,8 @@ export default class Dropdown extends Component {
     render() {
         return (
             <>
-                <select onChange={this.props.handleChange}>
-                <option value=''>- Choose Something -</option> 
+                <select value={this.props.currentValue} onChange={this.props.handleChange}>
+                <option value=''>{this.props.placeholder}</option> 
                     {this.props.options.map(option => 
                         <option key={Math.random()}value={option}>{option}</option>
                     )}

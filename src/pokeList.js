@@ -10,9 +10,9 @@ export default class PokeList extends Component {
             url={object.url_image} 
             alt={object.id}
             name={object.pokemon}
+            ability={object.ability_1}
+            shape={object.shape}
             type={object.type_1}
-            attack={object.attack}
-            defense={object.defense}
         />));
         return (
             <ul>
