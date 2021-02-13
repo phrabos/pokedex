@@ -16,6 +16,7 @@ export default class App extends Component {
                 <Router>
                   <Header />
                     <Switch>
+                        <div className='wrapper'>
                         <Route 
                             path="/" 
                             exact
@@ -26,6 +27,8 @@ export default class App extends Component {
                             exact
                             render={(routerProps) => <SearchPage {...routerProps} />} 
                         />
+                        </div>
+                        
                     </Switch>
                 </Router>
             </div>

@@ -1,4 +1,5 @@
 .App {
+  box-sizing: border-box;
   text-align: center;
 }
 p {
@@ -16,7 +17,7 @@ img {
   width: 100px;
   height: 100px;
   border-radius: 50%;
-  border: 1px solid black;
+  border: 1px solid white;
 }
 ul {
   display: flex;
@@ -26,7 +27,7 @@ ul {
   margin:0px;
   flex-wrap: wrap;
   /* background-color: gainsboro; */
-  width: 99vw;
+  width: 80vw;
 }
 
 li {
@@ -42,9 +43,29 @@ li {
 .search-box{
   display: flex;
   flex-direction: column;
-  width: 100%;
+  width: 20vw;
   align-items: center;
-  border: 1px solid magenta;
+  border: 1px solid black;
   margin: 5px;
 
+}
+.wrapper {
+  display: flex;
+  width: 100vw;
+}
+button {
+  margin: 5px;
+  background-color: darkorange;
+  border-radius: 5px;
+  color: black;
+  width: 100px;
+  height: 40px;
+}
+select {
+  margin: 2px;
+  margin-bottom: 10px;
+  width: 100px;
+}
+h4{
+  margin: 0px;
 }

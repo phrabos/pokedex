@@ -12,6 +12,7 @@ export default class SearchPage extends Component {
         aToZ: '',
         category: '',
         search: '',
+        egg: 'dragon',
     }
     componentDidMount = () =>{
         this.setState({
@@ -34,47 +35,66 @@ export default class SearchPage extends Component {
         
       })
     }
-    handleButtonChange = (e) => {
+    handleClearButtonChange = (e) => {
         this.setState({
-          filteredObjects: e.target.value,
+          aToZ: '',
+          category: '',
+          search: '',
+          egg: '',
         })
       }
-    filteredDataObjects = () => {
-        if (this.state.search === '' && this.state.category === '') return this.state.objects;
-        const filteredObjects = this.state.objects.filter(object => object.pokemon.includes(this.state.search))
-        return filteredObjects;
-    }
+    handleEggChange = (e) => {
+        this.setState({
+          egg: e.target.value,
+        })
+        alert(`${e.target.value} too much if/else logic to get these working!`)
+      }
 
     sortAZ = () => {
-            if(this.state.category === '') return;
-            if(this.state.aToZ === 'Descending'){
-                this.state.objects.sort((a,b) => b[this.state.category].localeCompare(a[this.state.category]))
-            }else {
-                this.state.objects.sort((a,b) => a[this.state.category].localeCompare(b[this.state.category]))
-            }
-        }       
-        
-        render() {
-
+      if(this.state.category === '') return;
+      if(this.state.aToZ === 'Descending'){
+          this.state.objects.sort((a,b) => b[this.state.category].localeCompare(a[this.state.category]))
+      }else {
+          this.state.objects.sort((a,b) => a[this.state.category].localeCompare(b[this.state.category]))
+      }
+    }      
+      
+      render() {
         this.sortAZ();
+        const filteredDataObjects = this.state.objects.filter((object) => {
+          if (this.state.search === '' && this.state.category === '' && this.state.egg ==='') return this.state.objects;
+          return object.pokemon.includes(this.state.search)
+          // else if(object.egg_group_2 === this.state.egg) return true;
+        //  return this.state.objects;
+        }
+        )
+        
+        // const filteredEggObjects = filteredDataObjects.filter((object) => {
+        //   // if ( this.state.egg ==='') return filteredDataObjects;
+        //   if (object.egg_group_2 === this.state.egg) return true;
+        //   return filteredDataObjects;
+        // }
+        // )
         return (
             <>
             <SideBar 
             searchValue = {this.handleSearchChange}
-            buttonHandler = {this.handleButtonChange}
+            buttonHandler = {this.handleClearButtonChange}
             handleChange = {this.handleNameChange}
-            options = {['pokemon', 'ability_2', 'shape', 'type_1']}
+            options = {['pokemon', 'ability_1', 'shape', 'type_1']}
             currentValue={this.state.category}
             placeholder1={'-Category-'}
             handleChange2 = {this.handleAZChange}
             options2 = {['Ascending', 'Descending']}
             currentValue2={this.state.aToZ}
             placeholder2={'-Sort Order-'}
+            handleEggChange={this.handleEggChange}
 
             />
             <div className='ul-div'>
                 <PokeList 
-                dataObjects={this.filteredDataObjects()}
+                // dataObjects={this.filteredDataObjects()}
+                dataObjects={filteredDataObjects}
                 />
             </div>
 

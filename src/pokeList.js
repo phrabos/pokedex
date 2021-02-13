@@ -13,6 +13,7 @@ export default class PokeList extends Component {
             ability={object.ability_1}
             shape={object.shape}
             type={object.type_1}
+            egg={object.egg_group_2}
         />));
         return (
             <ul>
