@@ -12,7 +12,7 @@ export default class SearchPage extends Component {
         aToZ: '',
         category: '',
         search: '',
-        egg: 'dragon',
+        egg: '',
     }
     componentDidMount = () =>{
         this.setState({
@@ -47,7 +47,7 @@ export default class SearchPage extends Component {
         this.setState({
           egg: e.target.value,
         })
-        alert(`${e.target.value} too much if/else logic to get these working!`)
+        // alert(`${e.target.value} too much if/else logic to get these working!`)
       }
 
     sortAZ = () => {
@@ -62,19 +62,21 @@ export default class SearchPage extends Component {
       render() {
         this.sortAZ();
         const filteredDataObjects = this.state.objects.filter((object) => {
-          if (this.state.search === '' && this.state.category === '' && this.state.egg ==='') return this.state.objects;
-          return object.pokemon.includes(this.state.search)
-          // else if(object.egg_group_2 === this.state.egg) return true;
-        //  return this.state.objects;
+          if (this.state.search === '' && this.state.egg ==='') return this.state.objects;
+          if (!this.state.search && this.state.egg){
+            if (this.state.egg === object.egg_group_2) return true;
+          }
+          if (this.state.search && !this.state.egg){
+            if (object.pokemon.includes(this.state.search)) return true;
+          }
+          if (this.state.search && this.state.egg){
+            if (this.state.egg === object.egg_group_2 && object.pokemon.includes(this.state.search)) return true;
+          }
+
+         return false;
         }
         )
-        
-        // const filteredEggObjects = filteredDataObjects.filter((object) => {
-        //   // if ( this.state.egg ==='') return filteredDataObjects;
-        //   if (object.egg_group_2 === this.state.egg) return true;
-        //   return filteredDataObjects;
-        // }
-        // )
+
         return (
             <>
             <SideBar 
@@ -93,7 +95,6 @@ export default class SearchPage extends Component {
             />
             <div className='ul-div'>
                 <PokeList 
-                // dataObjects={this.filteredDataObjects()}
                 dataObjects={filteredDataObjects}
                 />
             </div>
