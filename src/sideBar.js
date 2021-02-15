@@ -9,6 +9,7 @@ export default class SideBar extends Component {
                 <h4>Search by Name</h4>
                 <SearchBox 
                     searchValue = {this.props.searchValue}
+                    handleSearchButton = {this.props.handleSearchButton}
                     buttonHandler = {this.props.buttonHandler}
                 />
                 <h4>Sort</h4>

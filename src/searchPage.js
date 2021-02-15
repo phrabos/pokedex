@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import PokeList from './pokeList.js';
-import data from './data.js';
+// import data from './data.js';
 import './App.css';
-// import SearchBox from './searchBox.js';
 import SideBar from './sideBar.js';
+import request from 'superagent';
 
 export default class SearchPage extends Component {
     state = {
@@ -14,16 +14,27 @@ export default class SearchPage extends Component {
         search: '',
         egg: '',
     }
-    componentDidMount = () =>{
-        this.setState({
-            objects: data,
-        })
+    componentDidMount = async () =>{
+        await this.loadPokedex();
     }
+    loadPokedex = async () => {
+      const data = await request.get ('https://pokedex-alchemy.herokuapp.com/api/pokedex?page=1&perPage=10');
+      this.setState ({
+        objects: data.body.results,
+      })
+    }
+
     handleSearchChange = (e) => {
         this.setState({
           search: e.target.value,
         })
       }
+
+    handleSearchButton = async () => {
+      const query = this.state.search
+      const data = await request.get(`https://pokedex-alchemy.herokuapp.com/api/pokedex?pokemon=${query}`)
+      this.setState({objects: data.body.results})
+    }
     handleAZChange = (e) => {
         this.setState({
           aToZ: e.target.value,
@@ -42,12 +53,12 @@ export default class SearchPage extends Component {
           search: '',
           egg: '',
         })
+        this.loadPokedex()
       }
     handleEggChange = (e) => {
         this.setState({
           egg: e.target.value,
         })
-        // alert(`${e.target.value} too much if/else logic to get these working!`)
       }
 
     sortAZ = () => {
@@ -81,6 +92,7 @@ export default class SearchPage extends Component {
             <>
             <SideBar 
             searchValue = {this.handleSearchChange}
+            handleSearchButton = {this.handleSearchButton}
             buttonHandler = {this.handleClearButtonChange}
             handleChange = {this.handleNameChange}
             options = {['pokemon', 'ability_1', 'shape', 'type_1']}
