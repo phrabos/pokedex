@@ -28,6 +28,9 @@ ul {
   flex-wrap: wrap;
   /* background-color: gainsboro; */
   width: 80vw;
+  height: 100vh;
+  overflow: scroll;
+  /* direction: rtl; */
 }
 
 li {

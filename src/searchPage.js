@@ -4,6 +4,7 @@ import PokeList from './pokeList.js';
 import './App.css';
 import SideBar from './sideBar.js';
 import request from 'superagent';
+import { nativeTouchData } from 'react-dom/test-utils';
 
 export default class SearchPage extends Component {
     state = {
@@ -16,18 +17,23 @@ export default class SearchPage extends Component {
     }
     componentDidMount = async () =>{
         await this.loadPokedex();
+
     }
     loadPokedex = async () => {
-      const data = await request.get ('https://pokedex-alchemy.herokuapp.com/api/pokedex?page=1&perPage=10');
+      const data = await request.get ('https://pokedex-alchemy.herokuapp.com/api/pokedex?page=1&perPage=50');
       this.setState ({
         objects: data.body.results,
+
       })
     }
 
-    handleSearchChange = (e) => {
+    handleSearchChange = async (e) => {
         this.setState({
           search: e.target.value,
         })
+        const query = this.state.search
+        const data = await request.get(`https://pokedex-alchemy.herokuapp.com/api/pokedex?pokemon=${query}`)
+        this.setState({objects: data.body.results})
       }
 
     handleSearchButton = async () => {
@@ -40,39 +46,40 @@ export default class SearchPage extends Component {
           aToZ: e.target.value,
         })
       }
-    handleNameChange = (e) => {
+    handleSortChange = (e) => {
       this.setState({
         category: e.target.value,
         
       })
     }
     handleClearButtonChange = (e) => {
-        this.setState({
-          aToZ: '',
-          category: '',
-          search: '',
+      this.loadPokedex()
+      this.setState({
+        aToZ: '',
+        category: '',
+        search: '',
           egg: '',
         })
-        this.loadPokedex()
       }
-    handleEggChange = (e) => {
-        this.setState({
-          egg: e.target.value,
-        })
-      }
+      handleEggChange = (e) => {
+      this.setState({
+        egg: e.target.value,
+      })
+    }   
+    
+    render() {
+        console.log(this.state.objects)
+        console.log(this.state.category)
+        const sortedData = this.state.objects.sort((a,b) =>{
 
-    sortAZ = () => {
-      if(this.state.category === '') return;
-      if(this.state.aToZ === 'Descending'){
-          this.state.objects.sort((a,b) => b[this.state.category].localeCompare(a[this.state.category]))
-      }else {
-          this.state.objects.sort((a,b) => a[this.state.category].localeCompare(b[this.state.category]))
-      }
-    }      
-      
-      render() {
-        this.sortAZ();
-        const filteredDataObjects = this.state.objects.filter((object) => {
+          if(this.state.category === '')return this.state.objects;
+          if(this.state.category && this.state.aToZ !== 'Descending')return  a[this.state.category].localeCompare(b[this.state.category]);
+          if(this.state.category && this.state.aToZ === 'Descending') return b[this.state.category].localeCompare(a[this.state.category]);
+          else return true;
+        } 
+        )
+        
+        const filteredDataObjects = sortedData.filter((object) => {
           if (this.state.search === '' && this.state.egg ==='') return this.state.objects;
           if (!this.state.search && this.state.egg){
             if (this.state.egg === object.egg_group_2) return true;
@@ -84,21 +91,21 @@ export default class SearchPage extends Component {
             if (this.state.egg === object.egg_group_2 && object.pokemon.includes(this.state.search)) return true;
           }
 
-         return false;
+          return false;
         }
         )
-
+   
         return (
             <>
             <SideBar 
             searchValue = {this.handleSearchChange}
             handleSearchButton = {this.handleSearchButton}
             buttonHandler = {this.handleClearButtonChange}
-            handleChange = {this.handleNameChange}
+            handleSortChange = {this.handleSortChange}
             options = {['pokemon', 'ability_1', 'shape', 'type_1']}
             currentValue={this.state.category}
             placeholder1={'-Category-'}
-            handleChange2 = {this.handleAZChange}
+            handleSortChange2 = {this.handleAZChange}
             options2 = {['Ascending', 'Descending']}
             currentValue2={this.state.aToZ}
             placeholder2={'-Sort Order-'}
