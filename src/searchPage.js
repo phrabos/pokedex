@@ -4,6 +4,7 @@ import PokeList from './pokeList.js';
 import './App.css';
 import SideBar from './sideBar.js';
 import request from 'superagent';
+import Spinner from './spinner.js'
 import { nativeTouchData } from 'react-dom/test-utils';
 
 export default class SearchPage extends Component {
@@ -14,26 +15,31 @@ export default class SearchPage extends Component {
         category: '',
         search: '',
         egg: '',
+        loading: false,
     }
     componentDidMount = async () =>{
         await this.loadPokedex();
 
     }
     loadPokedex = async () => {
+      this.setState({
+        loading: true,
+      })
       const data = await request.get ('https://pokedex-alchemy.herokuapp.com/api/pokedex?page=1&perPage=50');
       this.setState ({
         objects: data.body.results,
-
+        loading: false
       })
     }
 
     handleSearchChange = async (e) => {
         this.setState({
           search: e.target.value,
+          loading: true,
         })
         const query = this.state.search
         const data = await request.get(`https://pokedex-alchemy.herokuapp.com/api/pokedex?pokemon=${query}`)
-        this.setState({objects: data.body.results})
+        this.setState({objects: data.body.results, loading: false})
       }
 
     handleSearchButton = async () => {
@@ -97,6 +103,7 @@ export default class SearchPage extends Component {
    
         return (
             <>
+            {this.state.loading && <Spinner />}
             <SideBar 
             searchValue = {this.handleSearchChange}
             handleSearchButton = {this.handleSearchButton}
@@ -117,7 +124,6 @@ export default class SearchPage extends Component {
                 dataObjects={filteredDataObjects}
                 />
             </div>
-
             </>
 
         )
