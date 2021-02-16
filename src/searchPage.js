@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
 import PokeList from './pokeList.js';
-import data from './data.js';
+// import data from './data.js';
 import './App.css';
-// import SearchBox from './searchBox.js';
 import SideBar from './sideBar.js';
+import request from 'superagent';
+import Spinner from './spinner.js'
+import { nativeTouchData } from 'react-dom/test-utils';
 
 export default class SearchPage extends Component {
     state = {
@@ -13,55 +15,77 @@ export default class SearchPage extends Component {
         category: '',
         search: '',
         egg: '',
+        loading: false,
     }
-    componentDidMount = () =>{
-        this.setState({
-            objects: data,
-        })
+    componentDidMount = async () =>{
+        await this.loadPokedex();
+
     }
-    handleSearchChange = (e) => {
+    loadPokedex = async () => {
+      this.setState({
+        loading: true,
+      })
+      const data = await request.get ('https://pokedex-alchemy.herokuapp.com/api/pokedex?page=1&perPage=50');
+      this.setState ({
+        objects: data.body.results,
+        loading: false
+      })
+    }
+
+    handleSearchChange = async (e) => {
         this.setState({
           search: e.target.value,
+          loading: true,
         })
+        const query = this.state.search
+        const data = await request.get(`https://pokedex-alchemy.herokuapp.com/api/pokedex?pokemon=${query}`)
+        this.setState({objects: data.body.results, loading: false})
       }
+
+    handleSearchButton = async () => {
+      const query = this.state.search
+      const data = await request.get(`https://pokedex-alchemy.herokuapp.com/api/pokedex?pokemon=${query}`)
+      this.setState({objects: data.body.results})
+    }
     handleAZChange = (e) => {
         this.setState({
           aToZ: e.target.value,
         })
       }
-    handleNameChange = (e) => {
+    handleSortChange = (e) => {
       this.setState({
         category: e.target.value,
         
       })
     }
     handleClearButtonChange = (e) => {
-        this.setState({
-          aToZ: '',
-          category: '',
-          search: '',
+      this.loadPokedex()
+      this.setState({
+        aToZ: '',
+        category: '',
+        search: '',
           egg: '',
         })
       }
-    handleEggChange = (e) => {
-        this.setState({
-          egg: e.target.value,
-        })
-        // alert(`${e.target.value} too much if/else logic to get these working!`)
-      }
+      handleEggChange = (e) => {
+      this.setState({
+        egg: e.target.value,
+      })
+    }   
+    
+    render() {
+        console.log(this.state.objects)
+        console.log(this.state.category)
+        const sortedData = this.state.objects.sort((a,b) =>{
 
-    sortAZ = () => {
-      if(this.state.category === '') return;
-      if(this.state.aToZ === 'Descending'){
-          this.state.objects.sort((a,b) => b[this.state.category].localeCompare(a[this.state.category]))
-      }else {
-          this.state.objects.sort((a,b) => a[this.state.category].localeCompare(b[this.state.category]))
-      }
-    }      
-      
-      render() {
-        this.sortAZ();
-        const filteredDataObjects = this.state.objects.filter((object) => {
+          if(this.state.category === '')return this.state.objects;
+          if(this.state.category && this.state.aToZ !== 'Descending')return  a[this.state.category].localeCompare(b[this.state.category]);
+          if(this.state.category && this.state.aToZ === 'Descending') return b[this.state.category].localeCompare(a[this.state.category]);
+          else return true;
+        } 
+        )
+        
+        const filteredDataObjects = sortedData.filter((object) => {
           if (this.state.search === '' && this.state.egg ==='') return this.state.objects;
           if (!this.state.search && this.state.egg){
             if (this.state.egg === object.egg_group_2) return true;
@@ -73,20 +97,22 @@ export default class SearchPage extends Component {
             if (this.state.egg === object.egg_group_2 && object.pokemon.includes(this.state.search)) return true;
           }
 
-         return false;
+          return false;
         }
         )
-
+   
         return (
             <>
+            {this.state.loading && <Spinner />}
             <SideBar 
             searchValue = {this.handleSearchChange}
+            handleSearchButton = {this.handleSearchButton}
             buttonHandler = {this.handleClearButtonChange}
-            handleChange = {this.handleNameChange}
+            handleSortChange = {this.handleSortChange}
             options = {['pokemon', 'ability_1', 'shape', 'type_1']}
             currentValue={this.state.category}
             placeholder1={'-Category-'}
-            handleChange2 = {this.handleAZChange}
+            handleSortChange2 = {this.handleAZChange}
             options2 = {['Ascending', 'Descending']}
             currentValue2={this.state.aToZ}
             placeholder2={'-Sort Order-'}
@@ -98,7 +124,6 @@ export default class SearchPage extends Component {
                 dataObjects={filteredDataObjects}
                 />
             </div>
-
             </>
 
         )

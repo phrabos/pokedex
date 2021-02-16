@@ -9,18 +9,19 @@ export default class SideBar extends Component {
                 <h4>Search by Name</h4>
                 <SearchBox 
                     searchValue = {this.props.searchValue}
+                    handleSearchButton = {this.props.handleSearchButton}
                     buttonHandler = {this.props.buttonHandler}
                 />
                 <h4>Sort</h4>
                 <Dropdown 
                     currentValue={this.props.currentValue}
-                    handleChange={this.props.handleChange}
+                    handleSortChange={this.props.handleSortChange}
                     options={this.props.options}
                     placeholder={this.props.placeholder1}
                 />
                 <Dropdown 
                     currentValue={this.props.currentValue2}
-                    handleChange={this.props.handleChange2}
+                    handleSortChange={this.props.handleSortChange2}
                     options={this.props.options2}
                     placeholder={this.props.placeholder2}
                 />
