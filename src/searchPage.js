@@ -13,6 +13,9 @@ export default class SearchPage extends Component {
         search: '',
         shape: '',
         loading: false,
+        totalObjecs: 0,
+        page: 1,
+        totalPages: 0,
     }
     componentDidMount = async () =>{
         await this.fetchPokedex();
@@ -23,10 +26,12 @@ export default class SearchPage extends Component {
         this.setState({
         loading: true,
       })
-      const data = await request.get (`https://pokedex-alchemy.herokuapp.com/api/pokedex?page=1&perPage=50&pokemon=${this.state.search}&shape=${this.state.shape}&sort=${this.state.category}&direction=${this.state.aToZ}`);
+      const data = await request.get (`https://pokedex-alchemy.herokuapp.com/api/pokedex?page=${this.state.page}&perPage=20&pokemon=${this.state.search}&shape=${this.state.shape}&sort=${this.state.category}&direction=${this.state.aToZ}`);
       this.setState ({
         objects: data.body.results,
-        loading: false
+        loading: false,
+        totalObjects: data.body.count,
+        totalPages: Math.ceil(data.body.count / 20),
       })
     }
 
@@ -66,9 +71,16 @@ export default class SearchPage extends Component {
       })
       await this.fetchPokedex();
     }   
-    
+    handleNext = async () => {
+      await this.setState({page: this.state.page + 1})
+      await this.fetchPokedex();
+    }
+    handlePrevious = async () => {
+      await this.setState({page: this.state.page - 1})
+      await this.fetchPokedex();
+    }
     render() {
-
+      console.log(this.props)
         // const sortedData = this.state.objects.sort((a,b) =>{
 
         //   if(this.state.category === '')return this.state.objects;
@@ -95,8 +107,15 @@ export default class SearchPage extends Component {
         // )
    
         return (
-            <>
-           
+          <>
+            <div className='search-page'>
+            <div className='page-forward-back'>
+            <h4>Page {this.state.page} of {this.state.totalPages}</h4>
+            <div>
+              <button className='page-button' onClick={this.handlePrevious} disabled={this.state.page === 1}>previous</button>
+              <button className='page-button' onClick={this.handleNext} disabled={this.state.page === this.state.totalPages}>next</button>
+            </div>
+            </div>
             <SideBar 
             searchValue = {this.handleSearchChange}
             handleSearchButton = {this.handleSearchButton}
@@ -111,14 +130,20 @@ export default class SearchPage extends Component {
             placeholder2={'-Sort Order-'}
             handleShapeChange={this.handleShapeChange}
             />
-            {this.state.loading ? <Spinner />
+            </div>
+            <div className='images-section'>
+
+
+            {this.state.loading 
+            ? <Spinner />
             : <div className='ul-div'>
             <PokeList 
             dataObjects={this.state.objects}
             />
-            </div>}
-            </>
-
+            </div>
+            }
+            </div>
+          </> 
         )
     }
 }

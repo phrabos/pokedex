@@ -10,7 +10,7 @@ p {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100vw;
+  /* width: 100vw; */
 }
 img {
   
@@ -83,4 +83,49 @@ h4{
   right: 0;
   width: 200px;
   height: 200px;
+}
+.imageLinks {
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: bold;
+}
+.ul-detail{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  list-style: none;
+  width: 200px;
+  height: fit-content;
+  border: 2px solid black;
+}
+.page-button{
+  /* margin: 5px; */
+  background-color: darkorange;
+  border-radius: 5px;
+  color: black;
+  width: 70px;
+  height: 30px;
+  padding: 0px;
+}
+.images-section{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.page-forward-back{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 20vw;
+  border: 1px solid black;
+  margin: 5px;
+}
+.details-page{
+  width: 100vw;
+  height: 100vh;
+  border: 1px solid salmon;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
