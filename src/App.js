@@ -8,6 +8,8 @@ import {
 import HomePage from './homePage.js';
 import SearchPage from './searchPage.js';
 import Header from './header/header.js';
+import DetailPage from './detailPage.js';
+import './App.css';
 
 export default class App extends Component {
     render() {
@@ -15,8 +17,8 @@ export default class App extends Component {
             <div>
                 <Router>
                   <Header />
-                    <Switch>
                         <div className='wrapper'>
+                    <Switch>
                         <Route 
                             path="/" 
                             exact
@@ -27,9 +29,14 @@ export default class App extends Component {
                             exact
                             render={(routerProps) => <SearchPage {...routerProps} />} 
                         />
-                        </div>
+                        <Route 
+                            path="/poke/:pokemonName" 
+                            exact
+                            render={(routerProps) => <DetailPage {...routerProps} />} 
+                        />
                         
                     </Switch>
+                        </div>
                 </Router>
             </div>
         )

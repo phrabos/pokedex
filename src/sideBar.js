@@ -25,10 +25,10 @@ export default class SideBar extends Component {
                     options={this.props.options2}
                     placeholder={this.props.placeholder2}
                 />
-                <h4>Choose Your Egg Type</h4>
-                <button onClick={this.props.handleEggChange}className='option' value='dragon'>Dragon</button>
-                <button onClick={this.props.handleEggChange}className='option' value='water1'>Water</button>
-                <button onClick={this.props.handleEggChange}className='option' value='plant'>Plant</button>
+                <h4>Choose Your Shape</h4>
+                <button onClick={this.props.handleShapeChange}className='option' value='humanoid'>Humanoid</button>
+                <button onClick={this.props.handleShapeChange}className='option' value='quadruped'>Quadruped</button>
+                <button onClick={this.props.handleShapeChange}className='option' value='wings'>Wings</button>
             </div>
         )
     }

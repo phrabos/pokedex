@@ -16,6 +16,7 @@ export default class PokeList extends Component {
             egg={object.egg_group_2}
         />));
         return (
+            
             <ul>
                 {pokeLI}
             </ul>
